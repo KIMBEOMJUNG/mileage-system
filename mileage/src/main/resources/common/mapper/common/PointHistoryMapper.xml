@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.triple.mileage.api.common.mapper.PointHistoryMapper">
+
+    <sql id="selectFrom">
+        SELECT 
+            `pointHistory`.`id`, 
+            `pointHistory`.`user_id`,
+            `pointHistory`.`point_value`,
+            `pointHistory`.`before_point`,
+            `pointHistory`.`after_point`,
+            `pointHistory`.`created_date`
+        FROM 
+            `point_history` `pointHistory` 
+    </sql>
+
+    <sql id="where">
+        <where>
+        </where>
+    </sql>
+
+    <resultMap id="pointHistoryResultMap" type="com.triple.mileage.api.common.entity.PointHistoryEntity">
+        <result property="id" column="id"/>
+        <result property="userId" column="user_id"/>
+        <result property="pointValue" column="point_value"/>
+        <result property="beforePoint" column="before_point"/>
+        <result property="afterPoint" column="after_point"/>
+        <result property="createdDate" column="created_date"/>
+    </resultMap>
+
+    <select
+        id="selectPointHistoryList"
+        parameterType="java.util.Map"
+        resultMap="pointHistoryResultMap"
+    >
+        <include refid="PageFragment.sortStart"/>
+        <include refid="selectFrom"/>
+        <include refid="where"/>
+        <include refid="PageFragment.sortEnd"/>
+        <include refid="PageFragment.limitOffset"/>
+    </select>
+
+    <select
+        id="selectPointHistoryListCount"
+        parameterType="java.util.Map"
+        resultType="java.lang.Integer"
+    >
+        <include refid="PageFragment.countStart"/>
+        <include refid="selectFrom"/>
+        <include refid="where"/>
+        <include refid="PageFragment.countEnd"/>
+    </select>
+
+    <select
+        id="selectPointHistory"
+        parameterType="java.util.Map"
+        resultMap="pointHistoryResultMap"
+    >
+        <include refid="selectFrom"/>
+        WHERE
+            `pointHistory`.`id` = #{id}
+    </select>
+
+    <insert id="insertPointHistory" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO `point_history` (
+            `user_id`,
+            `point_value`,
+            `before_point`,
+            `after_point`,
+            `created_date`
+        ) VALUES (
+            #{pointHistoryEntity.userId}, 
+            #{pointHistoryEntity.pointValue}, 
+            #{pointHistoryEntity.beforePoint},
+            #{pointHistoryEntity.afterPoint},
+            now()
+        )
+    </insert>
+
+    <delete id="deletePointHistory" parameterType="java.util.Map">
+        DELETE FROM `point_history`
+        WHERE 
+            `id` = #{id} 
+    </delete>
+</mapper>

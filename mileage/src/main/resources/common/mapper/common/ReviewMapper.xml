@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.triple.mileage.api.common.mapper.ReviewMapper">
+
+    <sql id="selectFrom">
+        SELECT 
+            `review`.`review_id`, 
+            `review`.`place_id`,
+            `review`.`user_id`,  
+            `review`.`attachedPhotoIds`,
+            `review`.`content`,
+            `review`.`created_date`, 
+            `review`.`last_modified_date`
+        FROM 
+            `review` `review` 
+    </sql>
+
+    <sql id="where">
+        <where>
+        </where>
+    </sql>
+
+    <resultMap id="reviewResultMap" type="com.triple.mileage.api.common.entity.ReviewEntity">
+        <result property="reviewId" column="review_id"/>
+        <result property="placeId" column="place_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="attachedPhotoIds" column="attachedPhotoIds"/>
+        <result property="content" column="content"/>
+        <result property="createdDate" column="created_date"/>
+        <result property="lastModifiedDate" column="last_modified_date"/>
+    </resultMap>
+
+    <select
+        id="selectReviewList"
+        parameterType="java.util.Map"
+        resultMap="reviewResultMap"
+    >
+        <include refid="PageFragment.sortStart"/>
+        <include refid="selectFrom"/>
+        <include refid="where"/>
+        <include refid="PageFragment.sortEnd"/>
+        <include refid="PageFragment.limitOffset"/>
+    </select>
+
+    <select
+        id="selectReviewListCount"
+        parameterType="java.util.Map"
+        resultType="java.lang.Integer"
+    >
+        <include refid="PageFragment.countStart"/>
+        <include refid="selectFrom"/>
+        <include refid="where"/>
+        <include refid="PageFragment.countEnd"/>
+    </select>
+
+    <select
+        id="selectReview"
+        parameterType="java.util.Map"
+        resultMap="reviewResultMap"
+    >
+        <include refid="selectFrom"/>
+        WHERE
+            `review`.`review_id` = #{reviewId}
+    </select>
+
+    <select
+        id="selectDuplicateCheckReviewCount"
+        parameterType="java.util.Map"
+        resultType="java.lang.Integer"
+    >
+        <include refid="PageFragment.countStart"/>
+        <include refid="selectFrom"/>
+        WHERE
+            `review`.`user_id` = #{userId}    
+        AND 
+            `review`.`place_id` = #{placeId}
+        <include refid="PageFragment.countEnd"/>
+    </select>
+
+    <select
+        id="selectFristReviewCount"
+        parameterType="java.util.Map"
+        resultType="java.lang.Integer"
+    >
+        <include refid="PageFragment.countStart"/>
+        <include refid="selectFrom"/>
+        WHERE
+            `review`.`place_id` = #{placeId}
+        <include refid="PageFragment.countEnd"/>
+    </select>
+
+    <insert id="insertReview" parameterType="java.util.Map" useGeneratedKeys="false" keyProperty="review_id">
+        INSERT INTO `review` (
+            `place_id`,
+            `user_id`,  
+            `attachedPhotoIds`,
+            `content`,
+            `created_date`
+        ) VALUES (
+            #{reviewEntity.placeId}, 
+            #{reviewEntity.userId},
+            #{reviewEntity.attachedPhotoIds},
+            #{reviewEntity.content},
+            now()
+        )
+    </insert>
+
+    <insert id="updateReview" parameterType="java.util.Map">
+        INSERT INTO `review` (
+            `review_id`, 
+            `place_id`,
+            `user_id`,  
+            `attachedPhotoIds`,
+            `content`,
+            `last_modified_date`
+        ) VALUES (
+            #{reviewEntity.reviewId}, 
+            #{reviewEntity.placeId},
+            #{reviewEntity.userId},
+            #{reviewEntity.attachedPhotoIds},
+            #{reviewEntity.content},
+            now()
+        )
+        ON DUPLICATE KEY UPDATE 
+            `review_id` = VALUES(`review_id`),
+            `place_id` = VALUES(`place_id`),
+            `user_id` = VALUES(`user_id`),
+            `attachedPhotoIds` = VALUES(`attachedPhotoIds`), 
+            `content` = VALUES(`content`),
+            `last_modified_date` = VALUES(`last_modified_date`)
+    </insert>
+
+    <delete id="deleteReview" parameterType="java.util.Map">
+        DELETE FROM `review`
+        WHERE 
+            `review_id` = #{reviewId} 
+    </delete>
+</mapper>
