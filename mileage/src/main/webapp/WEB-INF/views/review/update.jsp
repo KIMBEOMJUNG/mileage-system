@@ -48,7 +48,7 @@
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-4 text-gray-800">리뷰 쓰기</h1>
+                    <h1 class="h3 mb-4 text-gray-800">리뷰 수정</h1>
 
                     <div class="card shadow mb-4">
                         <!-- <div class="card-header py-3">
@@ -58,7 +58,7 @@
                         <div class="card-body">
                             <form id="form">
                                 <div class="form-group">
-                                    <textarea class="form-control form-control-user" id="InputContext" style="border-radius: 0rem;" placeholder="내용을 입력해주세요.."></textarea>
+                                    <textarea class="form-control form-control-user" id="InputContext" style="border-radius: 0rem;" placeholder="내용을 입력해주세요..">${item.content}</textarea>
                                 </div>
                                 <div class="form-group">
                                     <div class="custom-control custom-checkbox small">
@@ -68,7 +68,7 @@
                                 </div>
                                 <hr>
                                 <a href="javascript:submit();" class="btn btn-primary btn-user btn-block">
-                                    리뷰 올리기
+                                    리뷰 수정하기
                                 </a>
                             </form>
                         </div>
@@ -114,6 +114,15 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 
     <script>
+        async function checkboxState() {
+            let imgData = '${item.attachedPhotoIds}'.replace("[","").replace("]","");
+            if(imgData != null && imgData != undefined && imgData != ''){
+                const imgDataArr = imgData.split(','); 
+                if(imgDataArr.length > 0){
+                    $("input:checkbox[id='imgCheck']").prop("checked", true);
+                }
+            }
+        }
         async function submit() {
             let tempImgId = [];
             if($("#InputContext").val().length <= 0){
@@ -121,29 +130,27 @@
                 return;
             }
             if($('input:checkbox[id="imgCheck"]').is(":checked") == true){
-                tempImgId.push("photoTestIds-value-사진테스트입니다");
+                tempImgId.push("photoTestIds-value-사진테스트 수정 입니다");
             }
             let data = {
                 type: "REVIEW",
-                action: "ADD", /* "MOD", "DELETE" */
-                // reviewId: null,
+                action: "MOD",
+                reviewId: "${item.reviewId}",
                 content: $("#InputContext").val(),
                 attachedPhotoIds: tempImgId,
                 userId: "${id}",
-                placeId: "${placeId}"
+                placeId: "${item.placeId}"
             };
             try {
                 let result = await axios({ url: '/events', method: 'post', data });
-                if(result.data == 0){
-                    alert("이미 해당 장소에 리뷰를 작성했습니다.");
-                    return;
-                }
                 alert("리뷰 올리기가 완료되었습니다.");
-                location.href='/place/detail?&id='+"${placeId}";
+                location.href='/place/detail?&id='+"${item.placeId}";
             } catch (error) {
                 alert("저장중 문제가 발생했습니다. 다시 시도해주세요.");
             }
         }
+
+        checkboxState();
     </script>
 
 </body>

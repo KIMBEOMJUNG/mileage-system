@@ -17,6 +17,7 @@ public class RestApiCommonAccountController {
     @Autowired
     private AccountService accountService;
 
+    //로그인 컨트롤러
     @PostMapping(path = "/account/login")
     public MemberEntity logining(
             HttpServletRequest request,
@@ -25,35 +26,7 @@ public class RestApiCommonAccountController {
                 .userId(memberDto.getUserId())
                 .pw(memberDto.getPw())
                 .build();
-            System.out.println("memberEntity :" + memberEntity);
         return accountService.getMember(request, memberEntity);
     }
-
-    // @GetMapping(path = "/account/login/{nickname}")
-    // public MemberEntity getCreateLiked(
-    //     HttpServletRequest request, @PathVariable(name = "nickname") String nickname) {
-    //             MemberEntity member = accountService.getMember(nickname);
-    //             if(member != null) {
-    //                 HttpSession session = request.getSession();
-    //                 session.setAttribute("id", member.getId());
-    //                 session.setAttribute("nickname", member.getNickname());
-    //                 session.setAttribute("accountId", member.getAccountId());
-    //                 session.setAttribute("accountType", member.getAccountType());
-    //                 session.setAttribute("accountTypeKor", member.getAccountTypeKor());
-    //             }
-    //     return member;
-    // }
-
-    // @GetMapping(path = "/account/checkType")
-    // public int getAccountType(
-    //     @RequestHeader("Authorization") String data) {
-    //             String[] type = data.split("\\s+");
-    //             if(type.length == 2) {
-    //                 if(type[0] != null && type[0] != "") {
-    //                     return 1;
-    //                 }
-    //             }
-    //     return 0;
-    // }
    
 }

@@ -6,12 +6,13 @@ public class util {
 
     public static ArrayList<String> stringToArrayList (String entity) {
         String temp= entity.replace("[","").replace("]","");
-        String[] arr = temp.split(",");
         ArrayList<String> arrayList = new ArrayList<>();
-        for(String i : arr) {
-            arrayList.add(i);
+        if(temp.isEmpty() != true){
+            String[] arr = temp.split(",");
+            for(String i : arr) {
+                arrayList.add(i);
+            }
         }
-
         return arrayList;
     }
     

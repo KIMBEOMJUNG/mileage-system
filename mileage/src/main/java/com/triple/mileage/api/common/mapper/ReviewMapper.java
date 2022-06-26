@@ -30,9 +30,6 @@ public interface ReviewMapper {
     public Integer selectFristReviewCount(
             @Param(value = "placeId") String placeId);
 
-    public ReviewEntity selectLoginReview(
-            @Param(value = "reviewEntity") ReviewEntity reviewEntity);
-
     public Integer insertReview(
             @Param(value = "reviewEntity") ReviewEntity reviewEntity);
 

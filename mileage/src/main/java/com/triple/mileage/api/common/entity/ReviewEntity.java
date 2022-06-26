@@ -37,6 +37,8 @@ public class ReviewEntity {
 
     private String content;
 
+    private int firstState;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdDate;
@@ -44,5 +46,9 @@ public class ReviewEntity {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime lastModifiedDate;
+
+    // ==============================
+
+    private String nickname;
 
 }

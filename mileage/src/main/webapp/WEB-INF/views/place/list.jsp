@@ -78,14 +78,6 @@
                             </div>
                             <div id="pageButton" style="text-align: center;">
                             </div>
-                            <div>
-                                <a href="javascript:write()" class="btn btn-info btn-icon-split">
-                                    <span class="icon text-white-50">
-                                        <i class="fas fa-info-circle"></i>
-                                    </span>
-                                    <span class="text">글쓰기</span>
-                                </a>
-                            </div>
                         </div>
                     </div>
 

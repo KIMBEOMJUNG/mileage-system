@@ -27,4 +27,6 @@ public class ReviewDto {
 
     private String content;
 
+    private int firstState;
+
 }

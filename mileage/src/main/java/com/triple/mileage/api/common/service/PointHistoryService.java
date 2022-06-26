@@ -21,9 +21,8 @@ public class PointHistoryService {
     
     @Validated(value = { CreateValidationGroup.class })
     @Transactional
-    public Integer createPointHistory(
+    public Integer createPointHistory( // 포인트 히스토리 추가
             @Valid @NotNull(groups = { CreateValidationGroup.class }) PointHistoryEntity pointHistoryEntity) {
-                System.out.println("pointHistoryEntity2222  :" + pointHistoryEntity);
         return pointHistoryMapper.insertPointHistory(pointHistoryEntity);
     }
 

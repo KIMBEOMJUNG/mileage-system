@@ -9,14 +9,23 @@
             `review`.`user_id`,  
             `review`.`attachedPhotoIds`,
             `review`.`content`,
+            `review`.`first_state`,
             `review`.`created_date`, 
-            `review`.`last_modified_date`
+            `review`.`last_modified_date`,
+            `member`.`nickname`
         FROM 
-            `review` `review` 
+            `review` `review`
+        LEFT JOIN
+            `member` `member`
+        ON
+            `member`.`id` = `review`.`user_id`
     </sql>
 
     <sql id="where">
         <where>
+            <if test="reviewParamDto.placeId != null">
+                AND `review`.`place_id` = #{reviewParamDto.placeId}
+            </if>
         </where>
     </sql>
 
@@ -26,8 +35,10 @@
         <result property="userId" column="user_id"/>
         <result property="attachedPhotoIds" column="attachedPhotoIds"/>
         <result property="content" column="content"/>
+        <result property="firstState" column="first_state"/>
         <result property="createdDate" column="created_date"/>
         <result property="lastModifiedDate" column="last_modified_date"/>
+        <result property="nickname" column="nickname"/>
     </resultMap>
 
     <select
@@ -95,12 +106,14 @@
             `user_id`,  
             `attachedPhotoIds`,
             `content`,
+            `first_state`,
             `created_date`
         ) VALUES (
             #{reviewEntity.placeId}, 
             #{reviewEntity.userId},
             #{reviewEntity.attachedPhotoIds},
             #{reviewEntity.content},
+            #{reviewEntity.firstState},
             now()
         )
     </insert>
@@ -112,6 +125,7 @@
             `user_id`,  
             `attachedPhotoIds`,
             `content`,
+            `first_state`,
             `last_modified_date`
         ) VALUES (
             #{reviewEntity.reviewId}, 
@@ -119,14 +133,15 @@
             #{reviewEntity.userId},
             #{reviewEntity.attachedPhotoIds},
             #{reviewEntity.content},
+            #{reviewEntity.firstState},
             now()
         )
         ON DUPLICATE KEY UPDATE 
-            `review_id` = VALUES(`review_id`),
             `place_id` = VALUES(`place_id`),
             `user_id` = VALUES(`user_id`),
             `attachedPhotoIds` = VALUES(`attachedPhotoIds`), 
             `content` = VALUES(`content`),
+            `first_state` = VALUES(`first_state`),
             `last_modified_date` = VALUES(`last_modified_date`)
     </insert>
 

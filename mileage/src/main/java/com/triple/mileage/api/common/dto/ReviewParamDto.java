@@ -23,4 +23,6 @@ public class ReviewParamDto {
 
     private String action;
 
+    private int firstState;
+
 }

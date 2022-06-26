@@ -69,7 +69,7 @@
                             <div class="card shadow mb-4">
                                 <a href="javascript:write()" class="btn btn-info btn-icon-split">
                                     <span class="icon text-white-50">
-                                        <i class="fas fa-info-circle"></i>
+                                        <i class="fas fa-edit"></i>
                                     </span>
                                     <span class="text">리뷰 쓰기</span>
                                 </a>
@@ -78,23 +78,43 @@
                     </div>
                     
                     <div class="row">
+                        <div class="col-lg-12">
+                            <!-- Basic Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">리뷰 리스트</h6>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Earnings (Monthly) Card Example -->
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <div class="card border-left-primary shadow h-100 py-2">
-                                <div class="card-body">
-                                    <div class="row no-gutters align-items-center">
-                                        <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                </div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800">리뷰 쓸곳</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            
+                        <c:forEach var="reviewList" items="${reviewList}">
+                            <div class="col-xl-3 col-md-6 mb-4">
+                                <div class="card border-left-primary shadow h-100 py-2">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">작성자 : ${reviewList.nickname}</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    </div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">${reviewList.content}</div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <c:if test="${id == reviewList.userId}">
+                                                    <a href="javascript:remove(${reviewList.reviewId},${reviewList.placeId},${reviewList.userId},'${reviewList.attachedPhotoIds}','${reviewList.content}')" class="btn btn-danger btn-circle">
+                                                        <i class="fas fa-trash"></i>
+                                                    </a>
+                                                    <a href="/review/update?id=${reviewList.reviewId}" class="btn btn-info btn-circle">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                </c:if>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -161,38 +181,31 @@
             location.href='/review/write?&id='+placeId;
         }
 
-
-        // async function removeBoard() {
-        //     let params = '${item.id}';
-        //     try {
-        //         let result = await axios({ url: '/board/removeBoard/${item.id}', method: 'delete' });
-        //         alert("글 삭제가 완료되었습니다.");
-        //         location.href='/board/list'
-        //     } catch (error) {
-        //         alert("삭제중 문제가 발생했습니다. 다시 시도해주세요.");
-        //     }
-        // }
-
-        // async function likeUp() {
-        //     let params = {boardId: '${item.id}'};
-        //     if('${nickname}' == '') {
-        //         return;
-        //     }
-        //     try {
-        //         let result = await axios({ url: '/liked/createLiked', method: 'get', params });
-        //         if(result.data == 0) {
-        //             let beforLikeCount = $('#likedCount').text();
-        //             $('#likedCount').text('');
-        //             $('#likedCount').text(Number(beforLikeCount - 1));
-        //         } else {
-        //             let beforLikeCount = $('#likedCount').text();
-        //             $('#likedCount').text('');
-        //             $('#likedCount').text(Number(beforLikeCount + 1));
-        //         }
-        //     } catch (error) {
-        //         alert("문제가 발생했습니다. 다시 시도해주세요.");
-        //     }
-        // }
+        async function remove(reviewId,placeId,userId,attachedPhotoIds,contents) {
+            let imgData = attachedPhotoIds.replace("[","").replace("]","");
+            let imgDataArr;
+            if(imgData != null && imgData != undefined && imgData != ''){
+                imgDataArr = imgData.split(','); 
+            } else{
+                imgDataArr = [];
+            }
+            let data = {
+                type: "REVIEW",
+                action: "DELETE",
+                reviewId: reviewId,
+                content: contents,
+                attachedPhotoIds: imgDataArr,
+                userId: userId,
+                placeId: placeId
+            };
+            try {
+                let result = await axios({ url: '/events', method: 'post', data });
+                alert("리뷰 삭제가 완료되었습니다.");
+                location.href='/place/detail?&id='+placeId;
+            } catch (error) {
+                alert("삭제중 문제가 발생했습니다. 다시 시도해주세요.");
+            }
+        }
     </script>
 
 </body>

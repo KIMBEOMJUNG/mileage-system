@@ -17,6 +17,7 @@ public class RestApiCommonPlaceController {
     @Autowired
     private PlaceService placeService;
 
+    //여행지 리스트 페이징 컨트롤러
     @GetMapping(path = "/place/get")
     public PageResponse<PlaceEntity> getPlaceList(
             @ModelAttribute PlaceParamDto placeParamDto,

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class ApiCommonFrameController {
 
+	//프론트 상단 프레임 컨트롤러
     @RequestMapping(value = "/frame/top.do")
 	public String top(HttpServletRequest request, Model model) throws Exception {
 		HttpSession session = request.getSession();
@@ -19,6 +20,7 @@ public class ApiCommonFrameController {
 		return "frame/top";
 	}
 
+	//프론트 사이드바 프레임 컨트롤러
     @RequestMapping(value = "/frame/side.do")
 	public String side(HttpServletRequest request, Model model) throws Exception {
 		return "frame/side";
