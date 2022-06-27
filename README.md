@@ -27,7 +27,17 @@
 ------------  
   
 * ### SQL 파일
-  
+  https://drive.google.com/file/d/1zb9IUC7qPwcUQZeTLC9P5caLm0XFN0CQ/view?usp=sharing
+------------
+
+* ### ERD
+  - member 테이블 : 회원 정보를 담고있는 테이블
+  - point_history 테이블 : 포인트 증감시 히스토리 기록 테이블
+  - review 테이블 : 리뷰 정보 테이블
+  - place 테이블 : 여행지 정보 테이블
+
+  ![AQueryTool](https://user-images.githubusercontent.com/57612338/175874226-f8c7eb18-5f99-43ce-970a-9c5fb8c7cc04.png)
+
 ------------
 
 * ### 회원목록
