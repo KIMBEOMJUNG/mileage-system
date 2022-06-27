@@ -25,6 +25,15 @@
   jdbc를 사용하여 DB와 연결하였고, mybatis를 사용하여 XML 쿼리문을 작성하였습니다.
   
 ------------  
+
+* ### 주요기능 POST /events
+  - 컨트롤러 위치 : /Applications/Main/project/triple/mileage/src/main/java/com/triple/mileage/api/common/controller/RestApiCommonReviewController.java
+  - 서비스 위치 : /Applications/Main/project/triple/mileage/src/main/java/com/triple/mileage/api/common/service/
+  - REST API로 해당 컨트롤러 안에서 type에 따라 추가,수정,삭제 서비스를 호출하도록 구성되었습니다.
+  - 리뷰 추가,수정,삭제 시 변경전 리뷰에서 지급된 포인트와 비교하여 포인트 회수 및 지급 로직을 개발하였으며, 포인트 변동시 마다 point_history 테이블에 기록되게 됩니다. 회원의 현재 포인트는 member 테이블의 point 컬럼에서 기록됩니다.
+  - 첫리뷰 여부 확인은 해당 여행지의 이전 리뷰의 존재 여부에 따라 첫리뷰로 판단하며, 첫리뷰는 review 테이블의 frist_state의 값이 1이며, 일반리뷰는 0으로 기록됩니다.
+  
+------------
   
 * ### SQL 파일
   https://drive.google.com/file/d/1zb9IUC7qPwcUQZeTLC9P5caLm0XFN0CQ/view?usp=sharing
